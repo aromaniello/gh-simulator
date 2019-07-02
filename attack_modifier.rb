@@ -13,7 +13,11 @@ class AttackModifier
     id.include? 'RM'
   end
 
-  def attack_value(base=3)
+  def is_terminal?
+    !is_rolling?
+  end
+
+  def attack_value(base=nil)
     if is_rolling?
       if id.include? '+1'
         1

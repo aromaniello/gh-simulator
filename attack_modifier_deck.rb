@@ -78,4 +78,14 @@ class AttackModifierDeck
       deck.map { |modifier| modifier.id }.inspect
     end
   end
+
+  def draw_stack
+    stack = []
+    loop do
+      modifier = self.draw
+      stack.push modifier
+      break unless modifier.is_rolling?
+    end
+    stack
+  end
 end
