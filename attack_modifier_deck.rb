@@ -67,6 +67,10 @@ class AttackModifierDeck
     modifier
   end
 
+  def reshuffle_in_discard?
+    discard.select { |modifier| modifier.is_reshuffle? }.any?
+  end
+
   def print(arg=nil)
     if arg == :discard
       discard.map { |modifier| modifier.id }.inspect

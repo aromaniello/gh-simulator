@@ -8,10 +8,10 @@ module AMDSimulator
     base = args[:base] || 3
     deck = args[:deck] || AttackModifierDeck.new
     turns_per_scenario = args[:turns_per_scenario] || 15
+    scenario_reshuffle = args[:scenario_reshuffle] || false
     log = args[:log] || false
 
     sum = 0.0
-    reshuffle = false
     deck.reshuffle
 
     puts "Starting simulation with" if log
@@ -66,20 +66,13 @@ module AMDSimulator
           end
         end
 
-        if first_modifier.is_reshuffle? || second_modifier.is_reshuffle? || additional_modifiers.select { |mod| mod.is_reshuffle? }.any?
-          reshuffle = true
-        end
-
         puts "deck: #{deck.print(:remaining)}" if log
         puts "discard: #{deck.print(:discard)}" if log
       end
 
-      # reshuffle = true if turn % turns_per_scenario == 0
-
-      if reshuffle
+      if deck.reshuffle_in_discard? || (scenario_reshuffle && turn % turns_per_scenario == 0)
         puts "reshuffling" if log
         deck.reshuffle
-        reshuffle = false
       end
     end
     average_damage = sum / (turns * attacks_per_turn)
